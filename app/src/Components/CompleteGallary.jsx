@@ -54,7 +54,7 @@ const CompleteGallary = ({ ringData }) => {
               src={
                 ringData.diamond?.diamondImage
                   ? ringData.diamond.diamondImage
-                  : `${DefaultImageUrl}/diamond-${ringData.diamond.shape}.jpg`
+                  : `${DefaultImageUrl}/sample_${ringData.diamond.shape.toLowerCase()}.jpg`
               }
               alt={ringData.diamond.shape}
               fill
@@ -83,7 +83,7 @@ const CompleteGallary = ({ ringData }) => {
           {ringData.diamond.diamondVideo && (
             <SwiperSlide className="!h-auto !w-[70px] unset-img1 ">
               <img
-                src={`${DefaultImageUrl}/360-icon.webp`}
+                src={`${DefaultImageUrl}/360-video-icon.png`}
                 alt="360 Icon"
                 fill
                 className="!relative !h-auto"
@@ -95,7 +95,7 @@ const CompleteGallary = ({ ringData }) => {
               src={
                 ringData.diamond?.diamondImage
                   ? ringData.diamond.diamondImage
-                  : `${DefaultImageUrl}/diamond-${ringData.diamond.shape}.jpg`
+                  : `${DefaultImageUrl}/sample_${ringData.diamond.shape.toLowerCase()}.jpg`
               }
               alt={ringData.diamond.shape}
               fill

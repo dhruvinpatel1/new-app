@@ -2,24 +2,18 @@ import React, { use, useEffect, useState } from "react";
 import StepBuilder from "../Components/StepBuilder";
 import Slider from "../Components/Slider";
 import axios from "axios";
-import DiamondList from "../Components/DiamondList";
 import { Loader } from "../Components/Loader";
 import { GlobleVal } from "../Hooks/GlobleVal";
-import { PlusIcon, RefreshIcon, XIcon } from "@heroicons/react/outline";
-import SortIcon from "../Components/SortIcon";
 import Grid from "../Components/Grid";
-const { shapes, labs, shapeList, clarityList, colorList, cutList, DefaultImageUrl, fluorescenceList, polishList, symmertyList, fake_data } =
+const { shapes, labs, clarityList, colorList, cutList, DefaultImageUrl, fluorescenceList, polishList, symmertyList, fake_data } =
   GlobleVal();
 
 const StartWithDiamond = () => {
   const [loading, setLoading] = useState(false);
   const [diamonds, setDiamonds] = useState([]);
   const [preFilter, setPreFilter] = useState('record')
-  const [activeTab, setActiveTab] = useState("diamonds");
-  const [selectedDiamond, setSelectedDiamond] = useState(null);
   const [recentView, setRecentView] = useState([]);
   const [totalrecord, setTotalRecord] = useState({ max_offset: 1, total: 0 });
-  const [searchValue, setSearchValue] = useState("");
   const [filterLoading, setFilterLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -93,8 +87,6 @@ const StartWithDiamond = () => {
     localStorage.setItem("compare_diamond", JSON.stringify(compareDiamonds));
     GetCompareDiamondData()
   }, [compareDiamonds]);
-
-  console.log("compareDiamonds", compareDiamonds)
 
   useEffect(() => {
     const fetchFiltersAndDiamonds = async () => {
@@ -308,34 +300,34 @@ const StartWithDiamond = () => {
 
         <div className="lg:w-[80%] mx-auto">
           <div className={`contents sm:grid sm:grid-cols-2 gap-1 gap-y-[50px] gap-x-2 lg:gap-x-10 ${activerFilter == 'shapecaratprice' ? 'sm:block' : 'sm:hidden'} `}>
-            <div className="mt-5 !grid col-span-2 ">
-              <p className="!text-[#bb5f63] font-semibold">
-                {/* SHAPE */}
+            <div className="mt-5 !grid col-span-2 mb-[10px]">
+              <p className="!text-[#bb5f63] font-semibold mx-4 mb-[5px] sm:mb-0">
                 Shape
               </p>
               <div className="relative mt-5">
                 <div className="grid_step grid-cols-5 md:grid-cols-10 gap-3 ">
                   {shapes.map((shape, index) => (
                     <div
-                      className={`cursor-pointer w-1/2 mx-auto group`}
+                      className={`cursor-pointer mx-auto group`}
                       key={index}
                       onClick={() => handleShapeClick(shape)}
                     >
-                      <img
-                        alt={shape}
-                        src={`${DefaultImageUrl}/${shape}.png`}
-                        decoding="async"
-                        loading="lazy"
-                        className={`mx-auto  border-[2px] border-white rounded-full group-hover:border-gray-300 ${filters.shape.includes(shape) &&
-                          "!border-[#bb5f63]"
-                          }`}
-                        onError={(e) => (e.target.style.display = "none")} // Hide if image not found
-                      />
+                      <div className={`lg:w-[65px] lg:h-[65px] w-[50px] h-[50px] mx-auto p-3 bg-[#EDEDED] rounded-full border-1 border-white group-hover:border-[#bb5f63] overflow-hidden flex items-center justify-center ${filters.shape.includes(shape) ? '!border-[#bb5f63]' : ''}`}
+                      >
+                        <img
+                          alt={shape}
+                          src={`${DefaultImageUrl}/${shape.toLowerCase()}.png`}
+                          decoding="async"
+                          loading="lazy"
+                          className={`w-full h-full object-contain`}
+                          onError={(e) => (e.target.style.display = "none")} // Hide if image not found
+                        />
+                      </div>
 
                       <p
-                        className={`hidden md:!block text-center font-semibold md:text-[10px] lg:text-[14px] uppercase  ${filters.shape.includes(shape)
-                          ? "!text-[#bb5f63]"
-                          : "!text-black group-hover:!text-gray-500"
+                        className={`hidden md:!block text-center font-semibold md:text-[10px] lg:text-[14px] uppercase transition-all duration-300 border-b-2 border-transparent group-hover:!border-[#bb5f63] ${filters.shape.includes(shape)
+                          ? "!border-[#bb5f63]"
+                          : "border-transparent"
                           }`}
                       >
                         {shape}
@@ -377,7 +369,7 @@ const StartWithDiamond = () => {
               </div>
               <div className=" mx-8">
                 {labs.map((lab, index) =>
-                  <div key={index} className={`inline-block w-[64px] py-[4px] mr-[8px] text-center cursor-pointer border-[1px] ${filters.lab.includes(lab) ? 'bg-black text-white' : 'bg-white text-black'}`} onClick={() => handleLabClick(lab)}>{lab}</div>
+                  <div key={index} className={`inline-block w-[64px] py-[4px] mr-[8px] text-center cursor-pointer border-[1px] ${filters.lab.includes(lab) ? 'bg-[#6A6A6A] text-white' : 'bg-white text-black'}`} onClick={() => handleLabClick(lab)}>{lab}</div>
                 )}
               </div>
             </div>

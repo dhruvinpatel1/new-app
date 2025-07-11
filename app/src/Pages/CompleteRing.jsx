@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from "react";
 import StepBuilder from "../Components/StepBuilder";
 import axios from "axios";
-import { GlobleVal } from "../Hooks/GlobleVal";
 import CompleteGallary from "../Components/CompleteGallary";
-const { shapeList, DefaultImageUrl } = GlobleVal();
 
 const CompleteRing = () => {
   const [ringData, setRingData] = useState([]);
-  // const [ringSize, setRingSize] = useState("");
-  const [error, setError] = useState(false);
+
   const ringId = sessionStorage.getItem("ringId");
   const diamondId = sessionStorage.getItem("diamondId");
   const [Carterror, setCartError] = useState(false);
   const [CarterrorMessage, setCartErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const ringSize = sessionStorage.getItem("ringSize");
   const [detailActive, setDetailsActive] = useState("setting")
 
   const { diamond, product } = ringData
-
-
   const metafieldsRaw = product?.product?.metafields || [];
   const metafields = metafieldsRaw.filter(Boolean);
 

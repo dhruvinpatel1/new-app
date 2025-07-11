@@ -42,7 +42,7 @@ const DiamondGallary = ({ diamondData }) => {
               src={
                 diamondData?.diamondImage
                   ? diamondData.diamondImage
-                  : `${DefaultImageUrl}/diamond-${diamondData.shape}.jpg`
+                  : `${DefaultImageUrl}/sample_${diamondData.shape.toLowerCase()}.jpg`
               }
               alt={diamondData.Shape}
               fill
@@ -67,7 +67,7 @@ const DiamondGallary = ({ diamondData }) => {
           {diamondData.diamondVideo && (
             <SwiperSlide className="!h-auto !w-[70px] unset-img1 ">
               <img
-                src={`${DefaultImageUrl}/360-icon.webp`}
+                src={`${DefaultImageUrl}/360-video-icon.png`}
                 alt="360 Icon"
                 fill
                 className="!relative !h-auto"
@@ -79,7 +79,7 @@ const DiamondGallary = ({ diamondData }) => {
                src={
                 diamondData?.diamondImage
                   ? diamondData.diamondImage
-                  : `${DefaultImageUrl}/diamond-${(diamondData.shape).toLowerCase()}.jpg`
+                  : `${DefaultImageUrl}/sample_${(diamondData.shape).toLowerCase()}.jpg`
               }
               alt={diamondData.shape}
               fill

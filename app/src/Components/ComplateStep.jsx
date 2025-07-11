@@ -28,7 +28,7 @@ const ComplateStep = ({ data, builderData }) => {
           3
         </h2>
         <div className="md:col-span-4 pl-4 sm:pl-0 leading-5">
-          <p className="!w-[70px] sm:!w-[130px] leading-5 sm:leading-8 text-[10px] sm:text-[14px] lg:text-[20px] !text-[#a51b26]">
+          <p className="leading-5 sm:leading-8 text-[10px] sm:text-[14px] lg:text-[20px] !text-[#a51b26]">
             Complete Your Ring
           </p>
         </div>
@@ -51,7 +51,7 @@ const ComplateStep = ({ data, builderData }) => {
                 src={
                   builderData?.diamond.diamondImage
                     ? builderData?.diamond.diamondImage
-                    : `${DefaultImageUrl}/diamond-${builderData?.diamond.shape}.jpg`
+                    : `${DefaultImageUrl}/sample_${builderData?.diamond.shape.toLowerCase()}.jpg`
                 }
                 decoding="async"
                 data-nimg="fill"

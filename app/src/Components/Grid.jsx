@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { InformationCircleIcon, ScaleIcon, XIcon } from "@heroicons/react/outline";
+import { GlobleVal } from "../Hooks/GlobleVal";
+const { DefaultImageUrl } = GlobleVal();
 
 export default function Grid({ diamonds, compareDiamonds, setCompareDiamonds, compareIcon = true }) {
     const [stockNumber, setStockNumber] = useState("")
@@ -102,7 +104,7 @@ export default function Grid({ diamonds, compareDiamonds, setCompareDiamonds, co
                             }} />}
                         </div>
                         <div>
-                            <img src={data.diamondImage} className='h-52 sm:h-60 2xl:h-[300px]' />
+                            <img src={data.diamondImage ? data.diamondImage : `${DefaultImageUrl}/sample_${data.shape.toLowerCase()}.jpg`} className='h-52 sm:h-60 2xl:h-[300px]' />
                         </div>
                         <div className="mt-[10px] text-center">
                             <p className="text-[16px] mb-[10px]">{`${data.carat}-carat ${data.shape} Shape Natural Diamond`}</p>

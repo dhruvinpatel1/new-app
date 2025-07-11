@@ -1,6 +1,5 @@
 function replaceAddToCartButtons() {
   const productForms = document.querySelectorAll('form[data-type="add-to-cart-form"]');
-  console.log("productForms", productForms)
 
   productForms.forEach(function (form) {
 

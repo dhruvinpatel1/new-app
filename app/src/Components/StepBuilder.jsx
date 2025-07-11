@@ -39,7 +39,6 @@ const StepBuilder = (props) => {
       const reaponse = await axios.get(
         `http://localhost:8000/api/v1/data/ring-builder?diamond_id=${diamondIdBuilder}&product_id=${ringId}`
       );
-      console.log("reaponse",reaponse)
       setBuilderData(reaponse.data.result);
       setLoading(false);
     } catch (error) {

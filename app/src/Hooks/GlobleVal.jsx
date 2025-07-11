@@ -38,7 +38,7 @@ export const GlobleVal = () => {
         fake_data.push(<div key={i} className="mb-2 flex animate-pulse flex-col space-y-3 p-[1px]"><div className="w-[100%] bg-gray-300 h-60 lg:h-80"></div><div className="w-[65%] bg-gray-300 h-4"></div><div className="w-[40%] bg-gray-300 h-4"></div></div>)
     }
 
-    const DefaultImageUrl = 'https://cdn.shopify.com/s/files/1/0901/4532/5401/files'
+    const DefaultImageUrl = 'https://cdn.shopify.com/s/files/1/0709/4193/3758/files'
 
     return { shapes, labs, shapeList, clarityList, colorList, cutList, LableList, DefaultImageUrl, fluorescenceList, polishList, symmertyList, fake_data }
 }

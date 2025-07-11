@@ -16,8 +16,6 @@ const DiamondStep = ({ data, builderData, step }) => {
     window.location.href = `/pages/view-diamond/?diamond_id=${builderData.diamond.stockNumber}`;
   };
 
-  console.log("builderData", builderData)
-
   return (
     <div className="flex lg:col-span-2">
       <div className={`${step == 1 ? "hidden " : ""
@@ -87,7 +85,7 @@ const DiamondStep = ({ data, builderData, step }) => {
                 src={
                   builderData?.diamond.diamondImage
                     ? `${builderData?.diamond.diamondImage}`
-                    : `${DefaultImageUrl}/diamond-${builderData.diamond.Shape}.jpg`
+                    : `${DefaultImageUrl}/sample_${builderData.diamond.shape.toLowerCase()}.jpg`
                 }
                 decoding="async"
                 data-nimg="fill"
