@@ -129,16 +129,16 @@ const CompleteRing = () => {
                 <CompleteGallary ringData={ringData} />
               </div>
               <div className="md:inline-block md:w-[49%] md:ml-[1%] lg:w-[35%] lg:ml-[5%] mt-4 md:mt-[10px] align-top ">
-                <h1 className="mb-[5px] !text-[25px] !text-[#545454]">
+                <h1 className="mb-[15px] !text-[25px] !text-[#545454]">
                   {product.product.title} with {diamond.carat}-Carat {diamond.shape} Shape Natural Diamond
                 </h1>
-                <h2 className="!text-[18px] mb-[15px] !text-[#545454]">
+                <h2 className="!text-[18px] mb-[20px] !text-[#545454]">
                   Price : ${Number(product.price.amount) + Number(diamond.price)}
                 </h2>
                 <div className="!grid grid-cols-2 gap-[10px]">
                   <div className="min-h-[100px] bg-[#EEEEEE] p-[15px] rounded-[8px]">
                     <span className="bg-white text-[#545454] p-[10px] block !w-[80%] rounded-[18px] m-auto text-center">Setting Price:</span>
-                    <div className="flex justify-center items-center mt-[20px]">
+                    <div className="flex justify-evenly items-center mt-[20px]">
                       <span className="text-[22px] mr-[4px]">${product.price.amount}</span>
                       <span className="underline cursor-pointer" onClick={RingChange}>Change</span>
                     </div>
@@ -146,13 +146,13 @@ const CompleteRing = () => {
                   </div>
                   <div className="min-h-[100px] bg-[#EEEEEE] p-[15px] rounded-[8px]">
                     <span className="bg-white text-[#545454] p-[10px] block !w-[80%] rounded-[18px] m-auto text-center">Diamond Price:</span>
-                    <div className="flex justify-center items-center mt-[20px]">
+                    <div className="flex justify-evenly items-center mt-[20px]">
                       <span className="text-[22px] mr-[4px]">${diamond.price}</span>
                       <span className="underline cursor-pointer" onClick={DiamondChange}>Change</span>
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2 my-5">
+                <div className="flex gap-2 my-[20px]">
                   <div
                     className="w-full border-[1px] border-[#545454] text-center py-5 hover:bg-[#545454] text-[#545454] hover:text-white font-bold cursor-pointer"
                     onClick={addToCart}

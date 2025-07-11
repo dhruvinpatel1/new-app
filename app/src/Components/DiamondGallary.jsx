@@ -42,7 +42,7 @@ const DiamondGallary = ({ diamondData }) => {
               src={
                 diamondData?.diamondImage
                   ? diamondData.diamondImage
-                  : `${DefaultImageUrl}/diamond-${diamondData.Shape}.jpg`
+                  : `${DefaultImageUrl}/diamond-${diamondData.shape}.jpg`
               }
               alt={diamondData.Shape}
               fill
@@ -55,64 +55,6 @@ const DiamondGallary = ({ diamondData }) => {
               </p>
             )}
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="unset-img1 relative">
-              <img
-                src={`${DefaultImageUrl}/side_view_${diamondData.Shape}.webp`}
-                alt="Diamond_Side_View"
-                fill
-                className="!relative !h-auto"
-                unoptimized
-              />
-              <span
-                id={`${diamondData.Shape}-T`}
-                className="!absolute bg-[white] lg:text-sm text-xs"
-              >
-                Table: {diamondData.TablePer}%
-              </span>
-              <span
-                id={`${diamondData.Shape}-D`}
-                className="!absolute bg-[white] lg:text-sm text-xs"
-              >
-                Depth: {diamondData.DepthPer}%
-              </span>
-              <span
-                id={`${diamondData.Shape}-C`}
-                className="!absolute bg-[white] lg:text-sm text-xs"
-              >
-                Culet: {diamondData.Culet == "NON" ? "" : diamondData.Culet}
-              </span>
-              <span
-                id={`${diamondData.Shape}-G`}
-                className="!absolute bg-[white] lg:text-sm text-xs"
-              >
-                Girdle: {diamondData.GirdleFrom}
-              </span>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="unset-img1 relative">
-              <img
-                src={`${DefaultImageUrl}/upper_view_${diamondData.Shape}.webp`}
-                alt="Diamond_Upper_View"
-                fill
-                className="!relative !h-auto"
-                unoptimized
-              />
-              <span
-                id={`${diamondData.Shape}-W`}
-                className="!absolute bg-[white] lg:text-sm text-xs"
-              >
-                Width: {diamondData.Width} mm
-              </span>
-              <span
-                id={`${diamondData.Shape}-L`}
-                className="!absolute bg-[white] lg:text-sm text-xs"
-              >
-                Length: {diamondData.Length} mm
-              </span>
-            </div>
-          </SwiperSlide>
         </Swiper>
       </div>
       <div className="my-10 mx-auto w-full">
@@ -122,7 +64,7 @@ const DiamondGallary = ({ diamondData }) => {
           spaceBetween={5}
           className="mySwiper active thumb-swipe"
         >
-          {diamondData.VideoLink && (
+          {diamondData.diamondVideo && (
             <SwiperSlide className="!h-auto !w-[70px] unset-img1 ">
               <img
                 src={`${DefaultImageUrl}/360-icon.webp`}
@@ -135,29 +77,13 @@ const DiamondGallary = ({ diamondData }) => {
           <SwiperSlide className="!h-auto !w-[70px] unset-img1 bg-[#f3f3f3] ">
             <img
                src={
-                diamondData?.ImageB
-                  ? diamondData.ImageB
-                  : `${DefaultImageUrl}/diamond-${diamondData.Shape}.jpg`
+                diamondData?.diamondImage
+                  ? diamondData.diamondImage
+                  : `${DefaultImageUrl}/diamond-${(diamondData.shape).toLowerCase()}.jpg`
               }
-              alt={diamondData.Shape}
+              alt={diamondData.shape}
               fill
               className="!relative !h-auto mix-blend-multiply"
-            />
-          </SwiperSlide>
-          <SwiperSlide className="!h-auto !w-[70px] unset-img1">
-            <img
-              src={`${DefaultImageUrl}/side_view_${diamondData.Shape}.webp`}
-              alt="Diamond_Side_View"
-              fill
-              className="!relative !h-auto"
-            />
-          </SwiperSlide>
-          <SwiperSlide className="!h-auto !w-[70px] unset-img1">
-            <img
-              src={`${DefaultImageUrl}/upper_view_${diamondData.Shape}.webp`}
-              alt="Diamond_Upper_View"
-              fill
-              className="!relative !h-auto"
             />
           </SwiperSlide>
         </Swiper>

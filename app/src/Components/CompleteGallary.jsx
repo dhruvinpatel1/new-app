@@ -10,7 +10,7 @@ import { GlobleVal } from "../Hooks/GlobleVal"
 const { DefaultImageUrl } = GlobleVal()
 
 const CompleteGallary = ({ ringData }) => {
-  console.log("ringData", ringData)
+  
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (

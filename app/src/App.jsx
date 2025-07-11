@@ -3,7 +3,6 @@ import StepBuilder from "./Components/StepBuilder";
 import StartWithDiamond from "./Pages/StartWithDiamond";
 import ViewDiamond from "./Pages/ViewDiamond";
 import CompleteRing from "./Pages/CompleteRing";
-import CompareDiamond from "./Pages/CompareDiamond";
 
 function App() {
   const [dataType, setDataType] = useState({});
@@ -23,9 +22,7 @@ function App() {
       setDataType(root.dataset);
     }
   }, []);
-
-  console.log("dataType",dataType)
-
+  
   return (
     <>
       {dataType.collection == "engagement-ring" &&
@@ -40,8 +37,6 @@ function App() {
         <ViewDiamond />
       ) : dataType.handle == "complete-ring" ? (
         <CompleteRing />
-      ) : dataType.handle == "porownaj-diament" ? (
-        <CompareDiamond />
       ) : (
         ""
       )}

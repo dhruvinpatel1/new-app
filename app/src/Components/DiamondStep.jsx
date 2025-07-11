@@ -48,7 +48,7 @@ const DiamondStep = ({ data, builderData, step }) => {
               <span className="hidden sm:!block lg:text-[24px] text-[11px] font-bold sm:mx-2">
                 $ {builderData.diamond.price}
               </span>
-              <span>|</span>
+              <span className="hidden sm:!block">|</span>
               <span className="cursor-pointer sm:mx-2" onClick={ChangeHandler}>Change</span>
             </div>
           )}

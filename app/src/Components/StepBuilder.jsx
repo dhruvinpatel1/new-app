@@ -53,7 +53,7 @@ const StepBuilder = (props) => {
 
 
   return (
-    <div className={`${props.pagetype == "ring-list" && "!mt-6"}`}>
+    <div className={`!mt-6`}>
       <div className={`container mx-auto max-w-[1440px] px-8 `}>
         {loading && (props.page == "Complete" || props.page == "Diamond") ? (
           <div className="mt-[10px] w-full h-[60px] sm:h-[80px] grid_step grid-cols-3 lg:grid-cols-7 mb-[5px] sm:mb-[10px] bg-gray-300 animate-pulse"></div>

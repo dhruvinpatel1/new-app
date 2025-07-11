@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import DiamondGallary from "../Components/DiamondGallary";
 import StepBuilder from "../Components/StepBuilder";
 import { GlobleVal } from "../Hooks/GlobleVal";
+import Grid from "../Components/Grid";
 const { shapeList } = GlobleVal();
 
 const ViewDiamond = () => {
   const [diamondData, setDiamondData] = useState(null);
+  const [recentView, setRecentView] = useState([]);
   const queryParams = new URLSearchParams(window.location.search);
   const diamondId = queryParams.get("diamond_id");
 
@@ -24,9 +26,11 @@ const ViewDiamond = () => {
       const existingIds =
         JSON.parse(localStorage.getItem("Recently_view_diamond")) || [];
 
+        console.log("existingIds", existingIds)
+
       // Append the new ID if it's not already in the array
-      if (newData?.stock_no && !existingIds.includes(newData.stock_no)) {
-        const updatedIds = [...existingIds, newData.stock_no];
+      if (newData?.stockNumber && !existingIds.includes(newData.stockNumber)) {
+        const updatedIds = [...existingIds, newData.stockNumber];
 
         // Store back in localStorage
         localStorage.setItem(
@@ -42,6 +46,29 @@ const ViewDiamond = () => {
   useEffect(() => {
     fetchDiamondDetail();
   }, [diamondId]);
+
+
+  // You may also like -- Recently Viewd Diamonds
+  const recentViewDiamondIds =
+    JSON.parse(localStorage.getItem("Recently_view_diamond")) || [];
+
+  const GetRecentDiamondData = async () => {
+    if (!recentViewDiamondIds.length) return; // Exit if no IDs are stored
+
+    try {
+
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/recently/diamonds?ids=${recentViewDiamondIds}`
+      );
+      setRecentView(response.data.result);
+    } catch (error) {
+      console.error("Error fetching recent diamonds:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetRecentDiamondData();
+  }, []);
 
   const AddDiamond = (diamondId) => {
     sessionStorage.setItem("diamondId", diamondId);
@@ -68,8 +95,8 @@ const ViewDiamond = () => {
               <div className="mx-7">
                 <DiamondGallary diamondData={diamondData} />
               </div>
-              <div className="my-5 mx-7 lg:mx-0  text-black">
-                <h1 className="pb-2 !text-[25px]">
+              <div className="my-5 mx-7 lg:mx-0  text-[#545454]">
+                <h1 className="pb-2 !text-[25px] !text-[#545454] !font-medium">
                   {diamondData.carat}-Carat {diamondData.shape} Shape Natural Diamond
                 </h1>
                 <p className="text-[20px] my-[10px]">
@@ -95,10 +122,10 @@ const ViewDiamond = () => {
                   > {diamondData.lab} Report
                   </a>
                 </p>
-                <p>
+                <p className="text-[18px]">
                   This {diamondData.carat} carat, {diamondData.color} color diamond, rated as having {diamondData.clarity} clarity with a {diamondData.shape} shape supplied with a {diamondData.lab} grading report.
                 </p>
-                <div className="flex gap-2 my-5">
+                <div className="flex gap-2 my-[20px]">
                   <div
                     className="w-full border-[1px] border-[#545454] text-center py-5 hover:bg-[#545454] text-[#545454] hover:text-white font-bold cursor-pointer"
                     onClick={() => AddDiamond(diamondData.stockNumber)}
@@ -107,7 +134,7 @@ const ViewDiamond = () => {
                   </div>
                 </div>
                 <div className="my-5 ">
-                  <p className="uppercase  md:text-3xl my-3">
+                  <p className="uppercase  md:text-[20px] text-[18px] my-3">
                     Need Help?
                   </p>
                   <div className="flex ">
@@ -163,10 +190,10 @@ const ViewDiamond = () => {
             </div>
           )}
         </div>
-        <div className="border-t border-[#545454]">
+        <div className="border-t border-[#545454] px-7 lg:px-0">
           {diamondData ? (<div className="my-[20px]">
             <span className="text-[25px] text-[#545454] font-bold">Diamond Details</span>
-            <div className="!grid grid-cols-2 gap-[10px] mt-[20px]">
+            <div className="!grid sm:grid-cols-2 grid-cols-1 gap-[10px] mt-[20px]">
               <div className="text-[#545454]">
                 <div className="!grid grid-cols-2 py-[10px] px-[20px] bg-[#EEEEEE]">
                   <div className="font-bold">
@@ -322,6 +349,13 @@ const ViewDiamond = () => {
             </div>
           </div>) : <></>}
 
+        </div>
+        <div className="mt-[30px] px-7 lg:px-0">
+          <div className="mb-[10px]">
+            <h2 className="text-[25px capitalize]">You May Also Like</h2>
+          </div>
+          {recentView.length > 0 && 
+          <Grid diamonds={recentView} compareIcon={false} />}
         </div>
       </div>
     </>

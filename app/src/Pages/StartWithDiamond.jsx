@@ -26,8 +26,6 @@ const StartWithDiamond = () => {
   const [filtersInitialized, setFiltersInitialized] = useState(false);
   const [advanceFilters, setAdvanceFilters] = useState(false);
 
-  console.log("loading", loading)
-
   const [filterRange, setFilterRange] = useState({
     f_price: [0, 1000],
     f_carat: [0, 10],
@@ -70,36 +68,35 @@ const StartWithDiamond = () => {
 
   const [filters, setFilters] = useState(filterVal);
 
+
+  const [defaultFilter, setDefaultFilter] = useState({})
+  const [activerFilter, setActiveFilter] = useState("shapecaratprice")
+  const [compareDiamondData, setCompareDiamondData] = useState([])
+
   const [compareDiamonds, setCompareDiamonds] = useState(
     JSON.parse(localStorage.getItem("compare_diamond") || "[]")
   );
 
-  const [defaultFilter, setDefaultFilter] = useState({})
-  const [activerFilter, setActiveFilter] = useState("shapecaratprice")
+  const GetCompareDiamondData = async () => {
+    try {
+
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/compare/comparediamonds?ids=${compareDiamonds}`
+      );
+      setCompareDiamondData(response.data.result);
+    } catch (error) {
+      console.error("Error fetching recent diamonds:", error);
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem("compare_diamond", JSON.stringify(compareDiamonds));
+    GetCompareDiamondData()
   }, [compareDiamonds]);
 
-  // function for json data convert in to form data
-  const getFormData = (object) => {
-    const formData = new FormData();
-    Object.keys(object).map((key) =>
-      object[key] !== ""
-        ? Array.isArray(object[key])
-          ? object[key].length > 0
-            ? Object.keys(object[key]).map((key1) =>
-              formData.append(key + "[]", object[key][key1])
-            )
-            : ""
-          : formData.append(key, object[key])
-        : ""
-    );
-    return formData;
-  };;
+  console.log("compareDiamonds", compareDiamonds)
 
   useEffect(() => {
-
     const fetchFiltersAndDiamonds = async () => {
       try {
         const res = await axios.get("http://localhost:8000/api/v1/filter/getfilter");
@@ -114,7 +111,6 @@ const StartWithDiamond = () => {
         });
 
         if (sessionStorage.getItem("diamond_filters")) {
-          console.log("hellooooo")
           let sessionVal = JSON.parse(sessionStorage.getItem("diamond_filters"))
           sessionVal = {
             ...sessionVal,
@@ -122,10 +118,8 @@ const StartWithDiamond = () => {
             search_ID: ''
           }
           setFilters(sessionVal)
-          console.log("hellooooo111111111", filters)
 
         } else {
-          console.log("hellooooo22222222222222222222222222")
           setFilters({
             ...filters,
             f_price_min: Number(result.f_price_min),
@@ -139,7 +133,6 @@ const StartWithDiamond = () => {
             f_depth_min: Number(result.f_depth_min),
             f_depth_max: Number(result.f_depth_max),
           });
-          console.log("hellooooo2222222222222222222", filters)
         }
 
         setFiltersInitialized(true)
@@ -202,27 +195,27 @@ const StartWithDiamond = () => {
   };
 
   const handleShapeClick = (shapeLabel) => {
-      const newShapes = [...filters.shape];
-      if (newShapes.includes(shapeLabel)) {
-        const index = newShapes.indexOf(shapeLabel);
-        newShapes.splice(index, 1);
-      } else {
-        newShapes.push(shapeLabel);
-      }
-      setFilterValues({shape:newShapes})
+    const newShapes = [...filters.shape];
+    if (newShapes.includes(shapeLabel)) {
+      const index = newShapes.indexOf(shapeLabel);
+      newShapes.splice(index, 1);
+    } else {
+      newShapes.push(shapeLabel);
+    }
+    setFilterValues({ shape: newShapes })
   };
 
   const handleLabClick = (lab) => {
 
-      const newLab = [...filters.lab];
-      if (newLab.includes(lab)) {
-        const index = newLab.indexOf(lab);
-        newLab.splice(index, 1);
-      } else {
-        // Add the shape if it is not selected
-        newLab.push(lab);
-      }
-      setFilterValues({lab:newLab})
+    const newLab = [...filters.lab];
+    if (newLab.includes(lab)) {
+      const index = newLab.indexOf(lab);
+      newLab.splice(index, 1);
+    } else {
+      // Add the shape if it is not selected
+      newLab.push(lab);
+    }
+    setFilterValues({ lab: newLab })
   };
 
 
@@ -232,18 +225,16 @@ const StartWithDiamond = () => {
   }
 
 
-  const resetViewDiamondIds =
+  const recentViewDiamondIds =
     JSON.parse(localStorage.getItem("Recently_view_diamond")) || [];
 
   const GetRecentDiamondData = async () => {
-    if (!resetViewDiamondIds.length) return; // Exit if no IDs are stored
+    if (!recentViewDiamondIds.length) return; // Exit if no IDs are stored
 
     try {
-      const payload = new FormData();
-      payload.append("id", resetViewDiamondIds.join(",")); // Convert array to comma-separated string
 
       const response = await axios.get(
-        `https://supplier.goldport.pl/wp-json/netfillip/v1/stone-details?stock_no=${resetViewDiamondIds}`
+        `http://localhost:8000/api/v1/recently/diamonds?ids=${recentViewDiamondIds}`
       );
       setRecentView(response.data.result);
     } catch (error) {
@@ -294,17 +285,23 @@ const StartWithDiamond = () => {
           </div>
         )}
 
-        <div className="sm:!grid grid-cols-4 hidden mx-auto text-center pb-[20px] border-b border-[#545454] mt-[50px] text-[#545454] text-[18px] mb-[30px]">
-          <div className={`border-r cursor-pointer ${activerFilter === "shapecaratprice" && 'font-bold'}`} onClick={() => setActiveFilter("shapecaratprice")}>
+        <div className="sm:!flex sm:gap-x-[30px] lg:gap-x-[50px] justify-center items-center hidden mx-auto text-center pb-[20px] border-b border-[#545454] mt-[50px] text-[#545454] lg:text-[18px] text-[16px] mb-[30px]">
+          <div className={`cursor-pointer whitespace-nowrap ${activerFilter === "shapecaratprice" && 'font-bold'}`} onClick={() => setActiveFilter("shapecaratprice")}>
             Shape, Carat, Price & Report
           </div>
-          <div className={`border-r cursor-pointer ${activerFilter === "colorclaritycut" && 'font-bold'}`} onClick={() => setActiveFilter("colorclaritycut")}>
+          <div>|</div>
+          <div className={`cursor-pointer ${activerFilter === "colorclaritycut" && 'font-bold'}`} onClick={() => setActiveFilter("colorclaritycut")}>
             Color, Clarity & Cut
           </div>
-          <div className={`border-r cursor-pointer ${activerFilter === "advancefilter" && 'font-bold'}`} onClick={() => setActiveFilter("advancefilter")}>
+          <div>|</div>
+          <div className={`cursor-pointer ${activerFilter === "advancefilter" && 'font-bold'}`} onClick={() => setActiveFilter("advancefilter")}>
             More Filters
           </div>
-          <div className="cursor-pointer">
+          <div>|</div>
+          <div className="cursor-pointer" onClick={() => {
+            sessionStorage.removeItem("diamond_filters");
+            setFilters(filterVal);
+          }}>
             Reset Filter
           </div>
         </div>
@@ -499,34 +496,34 @@ const StartWithDiamond = () => {
           <div className="text-center">
             <h1 className="!text-[22px] uppercase mt-[35px] mb-[15px] text-[#545454]">select your Natural White Diamond</h1>
           </div>
-          <div className="sm:flex justify-between items-center">
-            <div className="flex uppercase sm:text-[15px] text-[13px]">
-              <p className={`border-r px-[10px] cursor-pointer flex sm:flex-row flex-col items-center justify-center ${preFilter === "record" && "font-bold"}`} onClick={() => changeTab('record')} ><span>Diamond Found</span> <span>({totalrecord.total})</span></p>
-              <p className={`border-r px-[10px] cursor-pointer flex sm:flex-row flex-col items-center justify-center ${preFilter === "recentlyviewed" && "font-bold"}`} onClick={() => changeTab('recentlyviewed')} ><span>Recently Viewed</span> <span>(0)</span></p>
-              <p className="px-[10px] cursor-pointer flex sm:flex-row flex-col items-center justify-center"><span>Compare</span> <span>(0)</span></p>
+          <div className="flex sm:flex-row flex-col justify-between items-center">
+            <div className="flex uppercase lg:text-[16px] sm:text-[15px] text-[13px]">
+              <p className={`border-r px-[16px] cursor-pointer flex sm:flex-row flex-col items-center justify-center ${preFilter === "record" && "font-bold"}`} onClick={() => changeTab('record')} ><span>Diamond Found</span> <span>({totalrecord.total})</span></p>
+              <p className={`border-r px-[16px] cursor-pointer flex sm:flex-row flex-col items-center justify-center ${preFilter === "recentlyviewed" && "font-bold"}`} onClick={() => changeTab('recentlyviewed')} ><span>Recently Viewed</span> <span> ({recentView.length || 0})</span></p>
+              <p className={`px-[16px] cursor-pointer flex sm:flex-row flex-col items-center justify-center ${preFilter === "camparediamond" && "font-bold"}`} onClick={() => changeTab('camparediamond')}><span>Compare</span> <span>({compareDiamondData.length || 0})</span></p>
             </div>
             <div className="flex gap-[5px] justify-center mt-[25px] sm:mt-0">
               <lable>Sort By:</lable>
               <div className="w-[50%] sm:w-auto text-right sm:ml-auto sm:text-[16px] text-[14px]">
-                <select className="h-full w-full pl-[2px] sm:w-[180px] border border-[#545454] text-[#545454] sm:p-1" value={filters.sort_by + '-' + filters.sorting_order} onChange={changeDropDown}>
-                  <option value="price-ASC">Price: Low-High</option>
-                  <option value="price-DESC">Price: High-Low</option>
-                  <option value="carat-ASC">Carat: Low-High</option>
-                  <option value="carat-DESC">Carat: High-Low</option>
-                  <option value="color-ASC">Color: Low-High</option>
-                  <option value="color-DESC">Color: High-Low</option>
-                  <option value="clarity-ASC">Clarity: Low-High</option>
-                  <option value="clarity-DESC">Clarity: High-Low</option>
-                  <option value="cut-ASC">Cut: Low-High</option>
-                  <option value="cut-DESC">Cut: High-Low</option>
+                <select className="h-full w-full pl-[2px] sm:w-[180px] border border-[#545454] focus-visible:!outline-0 focus-visible:!shadow-none text-white bg-[#6A6A6A] sm:p-1" value={filters.sort_by + '-' + filters.sorting_order} onChange={changeDropDown}>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="price-ASC">Price: Low-High</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="price-DESC">Price: High-Low</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="carat-ASC">Carat: Low-High</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="carat-DESC">Carat: High-Low</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="color-ASC">Color: Low-High</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="color-DESC">Color: High-Low</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="clarity-ASC">Clarity: Low-High</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="clarity-DESC">Clarity: High-Low</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="cut-ASC">Cut: Low-High</option>
+                  <option className="bg-[#EEEEEE] text-[#6A6A6A]" value="cut-DESC">Cut: High-Low</option>
                 </select>
               </div>
             </div>
           </div>
 
           {preFilter == 'record' ? diamonds.length > 0 ?
-            <Grid diamonds={diamonds} /> : loading ? <div className="!grid grid-cols-2 gap-y-3 gap-x-2 sm:gap-x-3 lg:gap-x-8 sm:grid-cols-3 lg:grid-cols-4 min-h-[500px]">{fake_data}</div> :
-              <div className="text-center py-20 px-3 text-sm capitalize">Unfortunately, no diamonds match your selected filters range.</div> : ''
+            <Grid diamonds={diamonds} compareDiamonds={compareDiamonds} setCompareDiamonds={setCompareDiamonds} /> : loading ? <div className="!grid grid-cols-2 gap-y-3 gap-x-2 sm:gap-x-3 lg:gap-x-8 sm:grid-cols-3 lg:grid-cols-4 min-h-[500px]">{fake_data}</div> :
+              <div className="text-center py-20 px-3 text-[18px] capitalize">Unfortunately, no diamonds match your selected filters range.</div> : ''
           }
 
           {preFilter == 'record' && totalrecord.max_offset > filters.page_offset &&
@@ -535,6 +532,16 @@ const StartWithDiamond = () => {
                 page_offset: filters.page_offset + 1
               })}>Load More</span>
             </div>
+          }
+
+          {preFilter == 'recentlyviewed' ? recentView.length > 0 ?
+            <Grid diamonds={recentView} compareDiamonds={compareDiamonds} setCompareDiamonds={setCompareDiamonds} /> : loading ? <div className="!grid grid-cols-2 gap-y-3 gap-x-2 sm:gap-x-3 lg:gap-x-8 sm:grid-cols-3 lg:grid-cols-4 min-h-[500px]">{fake_data}</div> :
+              <div className="text-center py-20 px-3 text-[18px] capitalize">Unfortunately, no diamonds match your selected filters range.</div> : ''
+          }
+
+          {preFilter == 'camparediamond' ? compareDiamondData.length > 0 ?
+            <Grid diamonds={compareDiamondData} compareDiamonds={compareDiamonds} setCompareDiamonds={setCompareDiamonds} /> : loading ? <div className="!grid grid-cols-2 gap-y-3 gap-x-2 sm:gap-x-3 lg:gap-x-8 sm:grid-cols-3 lg:grid-cols-4 min-h-[500px]">{fake_data}</div> :
+              <div className="text-center py-20 px-3 text-[18px] capitalize">NO DIAMONDS AVAILABLE FOR COMPARISON</div> : ''
           }
 
         </div>
