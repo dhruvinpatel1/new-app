@@ -2,9 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DiamondGallary from "../Components/DiamondGallary";
 import StepBuilder from "../Components/StepBuilder";
-import { GlobleVal } from "../Hooks/GlobleVal";
 import Grid from "../Components/Grid";
-const { shapeList } = GlobleVal();
 
 const ViewDiamond = () => {
   const [diamondData, setDiamondData] = useState(null);

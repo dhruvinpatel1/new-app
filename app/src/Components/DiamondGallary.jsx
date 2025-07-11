@@ -6,8 +6,8 @@ import "swiper/css/thumbs";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FreeMode, Thumbs, Navigation, Pagination } from "swiper/modules";
-import {GlobleVal} from "../Hooks/GlobleVal"
-const {DefaultImageUrl} = GlobleVal()
+import { GlobleVal } from "../Hooks/GlobleVal"
+const { DefaultImageUrl } = GlobleVal()
 
 const DiamondGallary = ({ diamondData }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -51,7 +51,7 @@ const DiamondGallary = ({ diamondData }) => {
             />
             {!diamondData.ImageB && (
               <p className="absolute !text-white font-medium bottom-0 w-full text-center text-xs sm:text-xl z-10 my-5">
-                  This is a sample image
+                This is a sample image
               </p>
             )}
           </SwiperSlide>
@@ -76,7 +76,7 @@ const DiamondGallary = ({ diamondData }) => {
           )}
           <SwiperSlide className="!h-auto !w-[70px] unset-img1 bg-[#f3f3f3] ">
             <img
-               src={
+              src={
                 diamondData?.diamondImage
                   ? diamondData.diamondImage
                   : `${DefaultImageUrl}/sample_${(diamondData.shape).toLowerCase()}.jpg`
